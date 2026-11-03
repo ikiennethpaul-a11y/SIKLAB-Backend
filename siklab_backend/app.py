@@ -17,11 +17,15 @@ CORS(app, origins='*', allow_headers=['Content-Type'], methods=['GET', 'POST', '
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 DB_CONFIG = {
-    'host':     os.getenv('MYSQL_HOST',     'localhost'),
-    'port':     int(os.getenv('MYSQL_PORT', '3306')),
-    'user':     os.getenv('MYSQL_USER',     'root'),
-    'password': os.getenv('MYSQL_PASSWORD', 'sabinosarte12'),
-    'database': os.getenv('MYSQL_DB',       'siklab_db'),
+    'host': os.environ['MYSQL_HOST'],
+    'port': int(os.environ.get('MYSQL_PORT', '3306')),
+    'user': os.environ['MYSQL_USER'],
+    'password': os.environ['MYSQL_PASSWORD'],
+    'database': os.environ['MYSQL_DB'],
+    'ssl_ca': os.environ['MYSQL_SSL_CA'],
+    'ssl_verify_cert': True,
+    'ssl_verify_identity': True,
+    'connection_timeout': 15,
 }
 
 def get_db():
