@@ -347,6 +347,27 @@ def update_profile(user_id):
 def health():
     return jsonify({'success': True, 'message': 'API is running.'}), 200
 
+@app.route('/health/db', methods=['GET'])
+def database_health():
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT DATABASE()")
+        database_name = cur.fetchone()[0]
+        cur.close()
+        db.close()
+
+        return jsonify({
+            'success': True,
+            'message': 'Database connection successful.',
+            'database': database_name
+        }), 200
+
+    except Exception:
+        return jsonify({
+            'success': False,
+            'message': 'Database connection failed.'
+        }), 500
 
 # ── POST /assessment/<id> ─────────────────────────────────────
 @app.route('/assessment/<int:user_id>', methods=['POST'])
